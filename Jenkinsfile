@@ -1,57 +1,32 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKERHUB_USER = "surajanagandula"
-        IMAGE_NAME = "caldev"
-        TAG = "latest"
-    }
-
     stages {
 
         stage('Clone') {
             steps {
-                     checkout scm
+                checkout scm
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $DOCKERHUB_USER/$IMAGE_NAME:$TAG .'
+                sh 'docker build -t calculator-app .'
             }
         }
 
-        stage('Login DockerHub') {
+        stage('Run Container') {
             steps {
-                withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'PASS')]) {
-                    sh 'echo $PASS | docker login -u $DOCKERHUB_USER --password-stdin'
-                }
+                sh 'docker stop calculator || true'
+                sh 'docker rm calculator || true'
+                sh 'docker run -d -p 3000:3000 --name calculator calculator-app'
             }
-        }
-
-        stage('Push Image') {
-            steps {
-                sh 'docker push $DOCKERHUB_USER/$IMAGE_NAME:$TAG'
-            }
-        }
-
-        stage('Deploy Container') {
-            steps {
-                sh '''
-                docker stop calc || true
-                docker rm calc || true
-                docker run -d -p 3000:3000 --name calc $DOCKERHUB_USER/$IMAGE_NAME:$TAG
-                '''
-            }
-        }
-    }
-
-    post {
-        success {
-            echo 'Calculator App Deployed Successfully 🚀'
-        }
-        failure {
-            echo 'Pipeline Failed ❌'
         }
     }
 }
