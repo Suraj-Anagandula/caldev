@@ -9,10 +9,9 @@ pipeline {
 
     stages {
 
-        stage('Clone Code') {
+        stage('Clone') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/Suraj-Anagandula/caldev.git'
+                     checkout scm
             }
         }
 
