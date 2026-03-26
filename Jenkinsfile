@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_USER = "surajanagandula"
-        IMAGE_NAME = "calculator-app"
+        IMAGE_NAME = "caldev"
         TAG = "latest"
     }
 
@@ -11,7 +11,8 @@ pipeline {
 
         stage('Clone Code') {
             steps {
-                git 'https://github.com/Suraj-Anagandula/caldev.git'
+                git branch: 'main',
+                    url: 'https://github.com/Suraj-Anagandula/caldev.git'
             }
         }
 
