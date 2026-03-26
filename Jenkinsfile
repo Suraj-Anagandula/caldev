@@ -25,7 +25,7 @@ pipeline {
             steps {
                 sh 'docker stop calculator || true'
                 sh 'docker rm calculator || true'
-                sh 'docker run -d -p 3000:3000 --name caldev surajanagandula/caldev'
+                sh 'docker run -d -p 3001:3000 --name caldev surajanagandula/caldev'
             }
         }
     }
