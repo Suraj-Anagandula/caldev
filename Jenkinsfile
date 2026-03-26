@@ -11,7 +11,7 @@ pipeline {
 
         stage('Clone Code') {
             steps {
-                git 'https://github.com/your-username/calculator-app.git'
+                git 'https://github.com/Suraj-Anagandula/caldev.git'
             }
         }
 
